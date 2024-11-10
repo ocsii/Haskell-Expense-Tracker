@@ -31,16 +31,17 @@ curl -sSL https://get.haskellstack.org/ | sh
 
 ### 1. Clone the repository
 
-First, clone the project to your local machine:
+First, clone the project to your local machine,
+
+Navigate to where tou want the project file to be stored.
 
 ```bash
 git clone https://github.com/yourusername/Haskell-Expense-Tracker.git
-cd Haskell-Expense-Tracker
 ```
 
 ### 2. Install dependencies
 
-Run the following command to install the necessary dependencies for the project:
+(In the root project directory) Run the following command to install the necessary dependencies for the project:
 
 ```bash
 stack build
@@ -50,7 +51,7 @@ This will download and install all the dependencies and set up the build environ
 
 ### 3. Run the application
 
-Navigate to the `src` directory:
+(Important!) Navigate to the `src` directory:
 
 ```bash
 cd src
