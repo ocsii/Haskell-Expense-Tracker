@@ -5,6 +5,7 @@ import Data.List (groupBy, sortBy, find)
 import qualified Data.Map.Strict as Map 
 import Text.CSV
 import Text.Printf -- To round and format values
+import System.IO (hFlush, stdout)
 
 
 -- ===============================================================================================================
@@ -21,11 +22,11 @@ data Category = Food | Leisure | Transportation | Family | Other | Invalid deriv
 
 -- Show instance of Category (To print)
 instance Show Category where
-  show Food = "🍎 Food"
-  show Leisure = "🎥 Leisure"
-  show Transportation = "🚗 Transportation"
-  show Family = "👪 Family"
-  show Other = "💡 Others"
+  show Food = "Food"
+  show Leisure = "Leisure"
+  show Transportation = "Transportation"
+  show Family = "Family"
+  show Other = "Others"
   show Invalid = "Invalid"
 
 
@@ -118,7 +119,9 @@ readMaybe numberString = case reads numberString of
 getExpenseInfo :: IO ExpenseRecord
 getExpenseInfo = do
 
+  putStrLn ""
   putStr "Enter expense name: " 
+  hFlush stdout  -- Ensure the prompt is displayed immediately
   name <- getLine
   
   value <- getValue
@@ -131,7 +134,9 @@ getExpenseInfo = do
 -- Get value of input
 getValue :: IO Float
 getValue = do
+  putStr ""
   putStr "\nEnter expense amount (RM): "
+  hFlush stdout  -- Ensure the prompt is displayed immediately
   valueString <- getLine
 
   -- Validation
@@ -151,6 +156,7 @@ getCategory = do
   putStr "4. " <> print Family
   putStr "5. " <> print Other
   putStr "\nEnter Category (Number): "
+  hFlush stdout  -- Ensure the prompt is displayed immediately
   categoryString <- getLine
 
   -- Validation
@@ -169,7 +175,7 @@ addExpense = do
   expenseInfo <- getExpenseInfo
   appendCSV expenseInfo
 
-  putStrLn $ "\nExpense succesfully added ✅ \n  Name    : " <> name expenseInfo <> 
+  putStrLn $ "\nExpense succesfully added \n  Name    : " <> name expenseInfo <> 
              "\n  Value   : " <> show (value expenseInfo) <>
              "\n  Category: " <> show (category expenseInfo)
 
@@ -247,6 +253,8 @@ getID processName function = do
 
   -- Get input of ID to edit
   printf "\nEnter the ID of the expense you want to %s: " processName 
+  hFlush stdout  -- Ensure the prompt is displayed immediately
+
   targetExpense <- getLine
 
   -- Validation
@@ -272,7 +280,7 @@ deleteExpense targetExpense = do
       -- Clear CSV and reappend everything (append function resets the ID numbers)
       clearCSV         
       mapM_ appendCSV updatedRecords
-      putStrLn $ "\nExpense number '" <> targetExpense <> "' succesfully deleted ✅"
+      putStrLn $ "\nExpense number '" <> targetExpense <> "' succesfully deleted"
           
     Nothing -> putStrLn "\nExpense not found." -- Expense ID does not exist
         
@@ -313,7 +321,7 @@ editExpense targetExpense = do
       -- Clear CSV and reappend everything
       clearCSV
       mapM_ appendCSV updatedRecords
-      putStrLn $ "\nExpense number '" <> targetExpense <> "' succesfully edited ✅"
+      putStrLn $ "\nExpense number '" <> targetExpense <> "' succesfully edited"
           
     Nothing -> putStrLn "\nExpense not found" -- Expense ID does not exist
 
@@ -333,13 +341,15 @@ editMenu = do
 mainMenu :: IO String
 mainMenu = 
  putStrLn "\n================== Expense Tracker ==================\n" 
- <> putStrLn "1. ➕ Add expense" 
- <> putStrLn "2. 👁️  View All Expenses" 
- <> putStrLn "3. 🔠 View Expenses by Category" 
- <> putStrLn "4. 🗑️  Delete Expenses" 
- <> putStrLn "5. ✏️  Edit Expenses" 
- <> putStrLn "6. ⛔ Exit" 
+ <> putStrLn "1. Add expense" 
+ <> putStrLn "2. View All Expenses" 
+ <> putStrLn "3. Expenses by Category" 
+ <> putStrLn "4. Delete Expenses" 
+ <> putStrLn "5. Edit Expenses" 
+ <> putStrLn "6. Exit" 
  <> putStr "\nEnter choice (1 -> 6): " 
+ <> hFlush stdout  -- Ensure the prompt is displayed immediately
+
  >> getLine 
  
 

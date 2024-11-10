@@ -1,0 +1,14 @@
+name: haskell-expense-tracker
+version: "0.1.0.0"
+github: "ocsii/Haskell-Expense-Tracker"
+license: MIT
+dependencies:
+  - base >= 4.7 && < 5
+  - csv
+  - split
+  - containers
+
+executables:
+  haskell-expense-tracker:
+    main: src/Main.hs
+    source-dirs: .
